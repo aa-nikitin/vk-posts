@@ -5,13 +5,13 @@ import {
     fetchFindGroupByIdRequest,
     fetchFindGroupByIdSuccess,
     fetchFindGroupByIdFailure
-} from '../actions/findGroupById';
+} from '../actions';
 
 import { getFoundGroupById } from '../reducers';
 
 function* getGroupsInfo(url) {
     try {
-        const [{ id, photo_100: photo }] = yield call(
+        const [{ id, photo_100: photo, name }] = yield call(
             callAPI,
             'groups.getById',
             {
@@ -21,7 +21,12 @@ function* getGroupsInfo(url) {
         );
 
         yield put(
-            fetchFindGroupByIdSuccess({ id: id, photo: photo, type: 'public' })
+            fetchFindGroupByIdSuccess({
+                id: id,
+                photo: photo,
+                name: name,
+                type: 'public'
+            })
         );
     } catch (error) {
         yield put(fetchFindGroupByIdFailure(error));
@@ -30,14 +35,23 @@ function* getGroupsInfo(url) {
 
 function* getUsersInfo(url) {
     try {
-        const [{ id, photo_100: photo }] = yield call(callAPI, 'users.get', {
-            user_ids: url,
-            fields: 'photo_100',
-            v: '5.100'
-        });
+        const [{ id, photo_100: photo, first_name, last_name }] = yield call(
+            callAPI,
+            'users.get',
+            {
+                user_ids: url,
+                fields: 'photo_100',
+                v: '5.100'
+            }
+        );
 
         yield put(
-            fetchFindGroupByIdSuccess({ id: id, photo: photo, type: 'user' })
+            fetchFindGroupByIdSuccess({
+                id: id,
+                photo: photo,
+                name: `${first_name} ${last_name}`,
+                type: 'user'
+            })
         );
     } catch (error) {
         yield getGroupsInfo(url);
@@ -50,12 +64,9 @@ function* getInfo() {
         let id = '';
         let str = url.replace(/[\w/:]*vk\.com\//g, '').replace(/\/[\w]+/g, '');
 
-        if (str.indexOf('id') === 0) {
-            id = str.replace('id', '');
-            yield put(fetchFindGroupByIdSuccess({ id: id, type: 'user' }));
-        } else if (str.indexOf('public') === 0) {
+        if (str.indexOf('public') === 0) {
             id = str.replace('public', '');
-            yield put(fetchFindGroupByIdSuccess({ id: id, type: 'public' }));
+            yield getGroupsInfo(id);
         } else {
             yield getUsersInfo(str);
         }

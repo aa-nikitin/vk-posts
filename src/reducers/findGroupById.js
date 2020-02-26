@@ -4,18 +4,18 @@ import {
     fetchFindGroupByIdRequest,
     fetchFindGroupByIdSuccess,
     fetchFindGroupByIdFailure
-} from '../actions/findGroupById';
+} from '../actions';
 
 const url = handleActions(
     {
         [fetchFindGroupByIdRequest]: (_state, { payload }) => payload,
-        [fetchFindGroupByIdSuccess]: () => '',
+        // [fetchFindGroupByIdSuccess]: () => '',
         [fetchFindGroupByIdFailure]: () => ''
     },
     ''
 );
 
-const group = handleActions(
+const result = handleActions(
     {
         [fetchFindGroupByIdRequest]: () => null,
         [fetchFindGroupByIdSuccess]: (_state, { payload }) => payload,
@@ -44,4 +44,4 @@ const error = handleActions(
 
 export const getFoundGroupById = state => state.findGroupById;
 
-export default combineReducers({ url, group, isLoading, error });
+export default combineReducers({ url, result, isLoading, error });

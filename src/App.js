@@ -8,9 +8,7 @@ function App() {
     return (
         <Container>
             <Row className="mt-3 mb-3">
-                <Col>
-                    <FindGroup />
-                </Col>
+                <FindGroup />
             </Row>
             <Row>
                 <Col>1 of 3</Col>
