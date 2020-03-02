@@ -1,10 +1,10 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import { settingsUserSave } from '../actions';
+import { settingsUserSet } from '../actions';
 
 const user = handleActions(
     {
-        [settingsUserSave]: (_state, { payload }) => payload
+        [settingsUserSet]: (_state, { payload }) => payload
     },
     {}
 );

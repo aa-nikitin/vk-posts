@@ -13,8 +13,10 @@ import _ from 'lodash';
 import { VK_LINK } from '../constants';
 import {
     fetchFindGroupByIdRequest,
-    settingsUserSave,
-    dataSaveRequest
+    settingsUserSet,
+    clearFindGroupById,
+    dataSaveRequest,
+    dataLoadRequest
 } from '../actions';
 import { getFoundGroupById, getSettings } from '../reducers/';
 
@@ -23,12 +25,22 @@ class FindGroup extends PureComponent {
         url: ''
     };
 
+    componentDidMount() {
+        this.props.dataLoadRequest();
+    }
+
     componentDidUpdate() {
-        const { foundIdGroup, settings, settingsUserSave } = this.props;
+        const {
+            foundIdGroup,
+            settings,
+            settingsUserSet,
+            dataSaveRequest
+        } = this.props;
         const checkRepeat = _.isEqual(foundIdGroup.result, settings.user);
 
         if (!checkRepeat && foundIdGroup.result) {
-            settingsUserSave(foundIdGroup.result);
+            settingsUserSet(foundIdGroup.result);
+            dataSaveRequest();
         }
     }
 
@@ -43,12 +55,15 @@ class FindGroup extends PureComponent {
     };
 
     handleClearBtn = () => {
-        this.setState({ url: '' });
-        this.props.dataSaveRequest();
+        this.props.clearFindGroupById();
     };
 
     handleControl = ({ target: { value } }) => {
         this.setState({ url: value });
+    };
+
+    handleEnter = ({ key }) => {
+        if (key === 'Enter') this.handleUrl();
     };
 
     handleErrors = () => {
@@ -61,7 +76,7 @@ class FindGroup extends PureComponent {
                 text: 'неверно введен url или id (сообщества/страницы)',
                 type: 'danger'
             };
-        } else if (result) {
+        } else if (!_.isEmpty(result)) {
             return {
                 text: `Страница для постов сохранена`,
                 type: 'success'
@@ -115,6 +130,7 @@ class FindGroup extends PureComponent {
                             aria-describedby="basic-addon1"
                             onChange={this.handleControl}
                             value={url}
+                            onKeyPress={this.handleEnter}
                         />
                         <InputGroup.Append>
                             <Button
@@ -146,6 +162,8 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
     fetchFindGroupByIdRequest,
-    settingsUserSave,
-    dataSaveRequest
+    settingsUserSet,
+    clearFindGroupById,
+    dataSaveRequest,
+    dataLoadRequest
 })(FindGroup);

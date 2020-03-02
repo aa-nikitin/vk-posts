@@ -3,32 +3,37 @@ import { combineReducers } from 'redux';
 import {
     fetchFindGroupByIdRequest,
     fetchFindGroupByIdSuccess,
-    fetchFindGroupByIdFailure
+    fetchFindGroupByIdFailure,
+    clearFindGroupById,
+    dataLoadSuccess
 } from '../actions';
 
 const url = handleActions(
     {
         [fetchFindGroupByIdRequest]: (_state, { payload }) => payload,
-        // [fetchFindGroupByIdSuccess]: () => '',
-        [fetchFindGroupByIdFailure]: () => ''
+        [fetchFindGroupByIdFailure]: () => '',
+        [clearFindGroupById]: () => ''
     },
     ''
 );
 
 const result = handleActions(
     {
-        [fetchFindGroupByIdRequest]: () => null,
+        [fetchFindGroupByIdRequest]: () => ({}),
         [fetchFindGroupByIdSuccess]: (_state, { payload }) => payload,
-        [fetchFindGroupByIdFailure]: () => null
+        [fetchFindGroupByIdFailure]: () => ({}),
+        [clearFindGroupById]: () => ({}),
+        [dataLoadSuccess]: (_state, { payload }) => payload.settings.user
     },
-    null
+    {}
 );
 
 const isLoading = handleActions(
     {
         [fetchFindGroupByIdRequest]: () => true,
         [fetchFindGroupByIdSuccess]: () => false,
-        [fetchFindGroupByIdFailure]: () => false
+        [fetchFindGroupByIdFailure]: () => false,
+        [clearFindGroupById]: () => false
     },
     false
 );
@@ -37,7 +42,8 @@ const error = handleActions(
     {
         [fetchFindGroupByIdRequest]: () => null,
         [fetchFindGroupByIdSuccess]: () => null,
-        [fetchFindGroupByIdFailure]: (_state, { payload }) => payload
+        [fetchFindGroupByIdFailure]: (_state, { payload }) => payload,
+        [clearFindGroupById]: () => null
     },
     null
 );

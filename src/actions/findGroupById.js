@@ -7,7 +7,8 @@ const {
                 request: fetchFindGroupByIdRequest,
                 success: fetchFindGroupByIdSuccess,
                 error: fetchFindGroupByIdFailure
-            }
+            },
+            clear: clearFindGroupById
         }
     }
 } = createActions(
@@ -18,7 +19,8 @@ const {
                     REQUEST: null,
                     SUCCESS: null,
                     ERROR: null
-                }
+                },
+                CLEAR: null
             }
         }
     },
@@ -28,5 +30,6 @@ const {
 export {
     fetchFindGroupByIdRequest,
     fetchFindGroupByIdSuccess,
-    fetchFindGroupByIdFailure
+    fetchFindGroupByIdFailure,
+    clearFindGroupById
 };

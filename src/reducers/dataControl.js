@@ -1,12 +1,22 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
-import { dataSaveRequest, dataSaveSuccess, dataSaveFailure } from '../actions';
+import {
+    dataSaveRequest,
+    dataSaveSuccess,
+    dataSaveFailure,
+    dataLoadRequest,
+    dataLoadSuccess,
+    dataLoadFailure
+} from '../actions';
 
 const isLoading = handleActions(
     {
         [dataSaveRequest]: () => true,
         [dataSaveSuccess]: () => false,
-        [dataSaveFailure]: () => false
+        [dataSaveFailure]: () => false,
+        [dataLoadRequest]: () => true,
+        [dataLoadSuccess]: () => false,
+        [dataLoadFailure]: () => false
     },
     false
 );
@@ -15,7 +25,10 @@ const error = handleActions(
     {
         [dataSaveRequest]: () => null,
         [dataSaveSuccess]: () => null,
-        [dataSaveFailure]: (_state, { payload }) => payload
+        [dataSaveFailure]: (_state, { payload }) => payload,
+        [dataLoadRequest]: () => null,
+        [dataLoadSuccess]: () => null,
+        [dataLoadFailure]: (_state, { payload }) => payload
     },
     null
 );

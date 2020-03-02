@@ -1,14 +1,18 @@
 import { createActions } from 'redux-actions';
 
 const {
-    settings: { user: settingsUserSave }
+    settings: {
+        user: { set: settingsUserSet }
+    }
 } = createActions(
     {
         SETTINGS: {
-            USER: null
+            USER: {
+                SET: null
+            }
         }
     },
     { namespace: '_' }
 );
 
-export { settingsUserSave };
+export { settingsUserSet };
